@@ -138,7 +138,7 @@ def fun_importCP():
             resp_currentipfwm = client.api_call("show-task",{"task-id" : res_getcurrip.data['tasks'][0]['task-id'],"details-level":"full"}).data['tasks'][0]['task-details'][0]['statusDescription'].replace("ipaddr: ", "")
             if not resp_currentipfwm == resp_dnsip:
                 output_text.update({"Message":"IP of "+args.hostname+" Changed"})
-                output_code.append("OK")
+                output_code.append("WARNING")
                 if not args.test:
                     res_ipsvergw_task = client.api_call("run-script",{"script-name":"change interoperable devices ip","script": str_set_newip,"targets" : args.scripttarget}) 
                     if res_ipsvergw_task.success is True:
