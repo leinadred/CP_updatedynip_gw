@@ -106,7 +106,7 @@ def fun_importCP():
                 output_text.update({"Message":"IP of "+args.hostname+"Changed"})
                 output_code.append("OK")
                 if not args.test:
-                    res_ipsvergw_task = client.api_call("run-script",{"script-name":"change interoperable devices ip","script": str_set_newip,"targets" : args.apiserver}) 
+                    res_ipsvergw_task = client.api_call("run-script",{"script-name":"change interoperable devices ip","script": str_set_newip,"targets" : args.scripttarget}) 
                     if res_ipsvergw_task.success is True:
                         logging.debug(client.api_call("show-task",{"task-id" : res_ipsvergw_task.data['tasks'][0]['task-id'],"details-level":"full"}).data['tasks'][0]['task-details'][0]['statusDescription'])
                     else:
