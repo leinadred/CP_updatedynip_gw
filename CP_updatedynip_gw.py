@@ -66,7 +66,7 @@ def fun_resolve():
         resp_dnsip=resp_dns.response.answer[1][0].address
     else:
         raise ("Something is wrong - please check entered data and/or debug!")
-    logging.debug("Result DNS Lookup:\t"+resp_dnsip+"\nDNS Response:\t"+resp_dns)
+    logging.debug("Result DNS Lookup:\t"+str(resp_dnsip)+"\nDNS Response:\t"+str(resp_dns))
 
     return resp_dnsip
 
@@ -75,7 +75,7 @@ def fun_importCP():
     global output_text
     # Command to be issued on Server for altering host entry
     str_get_currip = "echo -e 'print network_objects "+args.hostobjectname+"\n-q\n' | dbedit -local |grep ipaddr:"
-    str_set_newip = "echo -e 'modify network_objects "+args.hostobjectname+" ipaddr "+resp_dnsip+"\n-q\n' | dbedit -local"
+    str_set_newip = "echo -e 'modify network_objects "+args.hostobjectname+" ipaddr "+str(resp_dnsip)+"\n-q\n' | dbedit -local"
 
     client_args = APIClientArgs(server=args.apiserver, unsafe='True')
     with APIClient(client_args) as client:
