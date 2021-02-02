@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
 # CP_updatedynip_gw
-# version 1.0
+# version 0.1
 #
 # written by Daniel Meier (github.com/leinadred)
 # January 2021
@@ -83,7 +83,7 @@ def fun_importCP():
         if client.check_fingerprint() is False:
             output_text.update({"Message":"Could not get the server's fingerprint - Check connectivity with the server."})
             output_code.append("UNKNOWN")
-            print("UNKNOWN! Logging into SMS not successful! Please troubleshoot/debug script! "+str(output_text))
+            logging.debug("UNKNOWN! Logging into SMS not successful! Please troubleshoot/debug script! "+str(output_text))
             raise SystemExit(UNKNOWN)
         # login to server:
         if authapi_key:
