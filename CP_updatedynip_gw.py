@@ -16,15 +16,16 @@ import logging
 
 
 parser = argparse.ArgumentParser(description="Resolve Hostname to IP (and change IP of interoperable device).")
-parser.add_argument("--import", type=bool, help="Additionally import resolve result to Destination! (Currently Check Point R80.30++)")
-#parser.add_argument("--help", help="Print this help")
-parser.add_argument("--authapi", help="Authentication to CP API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'")
-parser.add_argument("--apiserver", help="Where to auth and script to")
-parser.add_argument("--scripttarget", help="target server (Firewall Management?)")
-parser.add_argument("--hostobjectname", help="host object name")
-parser.add_argument("--hostname", type=str, help="Tell hostname to resolve")
+parser.add_argument("--import", type=bool, help="Import resolved IP to Check Point Environment and install Policy (Currently Check Point R80.30++)")
+parser.add_argument("--authapi", help="Authentication to CP API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'", required=True)
+parser.add_argument("--apiserver", help="Where to auth and script to", required=True)
+parser.add_argument("--scripttarget", help="target server (mostly Firewall Management?)")
+parser.add_argument("--hostobjectname", help="host object name", required=True)
+parser.add_argument("--hostname", type=str, help="Tell hostname to resolve", required=True)
 parser.add_argument("--test", help="Nur gucken, nicht anfassen // read only, no action taken",action="store_true")
 parser.add_argument("--nagios", help="Give feedback, understandable for NAGIOS systems",action="store_true")
+parser.add_argument("--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices). otherwise define space separated", required=True)
+parser.add_argument("--package", help="Policy Package to install - if only one package is present, we will use that!")
 parser.add_argument("--verbose", action="store_true")
 
 args = parser.parse_args()
@@ -48,7 +49,7 @@ if args.verbose:
 logging.debug("################## Starting - With extended Logging ##################")
 
 #################################################################################################
-# Predfining Global Variables needed in functions                                               #
+# Predefining Global Variables needed in functions                                               #
 #################################################################################################
 resp_dnsip=""
 if "key:" in args.authapi:
@@ -69,7 +70,7 @@ def fun_resolve():
     logging.debug("Result DNS Lookup:\t"+str(resp_dnsip)+"\nDNS Response:\t"+str(resp_dns))
 
     return resp_dnsip
-
+    
 def fun_importCP():
     global output_code
     global output_text
@@ -99,16 +100,53 @@ def fun_importCP():
             raise SystemExit(UNKNOWN)
         else:
             logging.debug("LogIn to API successful!")
-
+            if not args.scripttarget:
+                resp_cphosts = client.api_call("show-checkpoint-hosts")
+                if resp_cphosts.data['total'] == 1:
+                    args.scripttarget = resp_cphosts.data['objects'][0]['name']
+                else:
+                    logging.debug("No Script Target (mostly Firewall Management) defined and more than one found! User '--scripttarget'!")
+                    raise SystemExit()
+            if not args.targetgw:
+                resp_targetgws = client.api_call("show-simple-gateways", {"limit" : 50, "offset" : 0, "details-level" : "standard"})
+                n=0
+                list_targetgws=[]
+                while n<resp_targetgws.data['total']:
+                    list_targetgws.append(resp_targetgws.data['objects'][n]['name'])
+                    n=n+1
+                if len(list_targetgws)>1:
+                    logging.debug("No target gateway defined! Found: "+str(n)+" gateways!"+str(list_targetgws)+"! Aborting!")
+                    raise SystemExit()
+            elif args.targetgw == "all":
+                resp_targetgw = client.api_call("show-simple-gateways", {"limit" : 50, "offset" : 0, "details-level" : "standard"})
+                n=0
+                list_targetgws=[]
+                while n<resp_targetgw.data['total']:
+                    list_targetgws.append(resp_targetgw.data['objects'][n]['name'])
+                    n=n+1
+                logging.debug("No target gateway defined! Found: "+str(n)+" gateways!"+str(list_targetgws)+" - will use all, as wished!")
+                args.targetgw=list_targetgws
+            if not args.package:
+                logging.debug("No package defined, try to sort out..")
+                resp_packages=client.api_call("show-packages", {"limit" : 50, "offset" : 0, "details-level" : "standard"})
+                if resp_packages.data['total']==1:
+                    args.package=resp_packages.data['packages'][0]['name']
+                else:
+                    logging.debug("multiple policy packages found, please define, which to use (--package)")
+                    raise SystemExit()
             res_getcurrip = client.api_call("run-script",{"script-name":"get interoperable devices ip","script": str_get_currip,"targets" : args.scripttarget})
             resp_currentipfwm = client.api_call("show-task",{"task-id" : res_getcurrip.data['tasks'][0]['task-id'],"details-level":"full"}).data['tasks'][0]['task-details'][0]['statusDescription'].replace("ipaddr: ", "")
             if not resp_currentipfwm == resp_dnsip:
-                output_text.update({"Message":"IP of "+args.hostname+"Changed"})
+                output_text.update({"Message":"IP of "+args.hostname+" Changed"})
                 output_code.append("OK")
                 if not args.test:
                     res_ipsvergw_task = client.api_call("run-script",{"script-name":"change interoperable devices ip","script": str_set_newip,"targets" : args.scripttarget}) 
                     if res_ipsvergw_task.success is True:
                         logging.debug(client.api_call("show-task",{"task-id" : res_ipsvergw_task.data['tasks'][0]['task-id'],"details-level":"full"}).data['tasks'][0]['task-details'][0]['statusDescription'])
+                        
+                        res_publish = client.api_call("publish", {}).success
+                        res_install = client.api_call("install-policy", {"policy-package" : args.package,  "access" : True,  "threat-prevention" : True,  "targets" : args.targetgw}).success
+                        output_text.update({"Message":"object "+args.hostname+" Changed! Now Publishing("+str(res_publish)+") and Install Policy("+str(res_install)+")"})
                     else:
                         output_text.update({"Message":"IP of "+args.hostname+"Changed but was unable to edit gateway object!"})
                         output_code.append("WARNING")
