@@ -119,7 +119,7 @@ def fun_importCP():
                 output_code.append("OK")
 
     if not args.nagios:
-        print(output_text+"\n\n"+output_code)
+        print(str(output_text)+"\n\n"+str(output_code))
 
     return output_text, output_code
 
