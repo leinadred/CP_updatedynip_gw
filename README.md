@@ -2,6 +2,7 @@
 
 Script queries for a given DNS Name (i.e. DynDNS) and uses the IP to update an interoperable device object via Check Points Management API by executing "dbedit" command, as interoperable devices are not available via Management API (Or I did not find that :) ) 
 Use Case is (why am I not just using a dns name?) that I have an ASA holding a Site to Site VPN with Check Point. ASA side also has a dynamically assigned public IP. With a bit of work, script can be used to do that with multiple sites/objects or to create interoperable devices batchwise.
+ ![Example - Nagios Output](/nagios_updateinteroperabledevice.png)
 
 Arguments:
 ```sh
@@ -28,7 +29,6 @@ Arguments:
 
 "--nagios", help="Give feedback, understandable for NAGIOS systems"
  - when IP is not changed, give back "OK" state. Else return warning (in default setup does not issue notification. 
- ![Example - Nagios Output](/nagios_updateinteroperabledevice.png)
  
 "--package", help="Policy Package to install - if only one package is present, we will use that!"
  - name of policy package. if not set and only one package is found, we´ll use that
