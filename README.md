@@ -10,7 +10,7 @@ When triggering the script with NAGIOS based system - Output:
 
 Arguments:
 ```sh
-"--authapi", help="Authentication to CP API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'", required=True
+"--authapi", help="Authentication to API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'", required=True
  - provide how to authenticate with API server and auth informations
 
 "--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices)", required=True
