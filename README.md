@@ -5,7 +5,7 @@ Use Case is (why am I not just using a dns name?) that I have an ASA holding a S
 
 Arguments:
 parser.add_argument("--authapi", help="Authentication to CP API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'", required=True)
- provide how to authenticate with API server and auth informations
+'' provide how to authenticate with API server and auth informations
 parser.add_argument("--apiserver", help="Firewall Management Server", required=True)
  Mostly IP of Firewall Management Server
 parser.add_argument("--scripttarget", help="target server (mostly CP Management Server?)")
