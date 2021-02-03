@@ -14,7 +14,7 @@ Arguments:
  - provide how to authenticate with API server and auth informations
 
 "--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices)", required=True
- - Firewalls to get the updated policy
+ - Firewalls to get the updated policy, when not set the script queries for gateways. (if only one found, this is been used)
 
 "--apiserver", help="Firewall Management Server", required=True
 - Mostly IP of Firewall Management Server
@@ -26,7 +26,7 @@ Arguments:
  - Hostname to resolve
 
 "--scripttarget", help="target server (mostly CP Management Server?)
- - if not set, the script queries for Check Point host objects to get CP Management Server. If more than one is found, an error is given out.
+ - if not set, the script queries for Check Point host objects. If more than one is found, script aborts.
 
 "--test", help="Nur gucken, nicht anfassen // read only, no action taken"
  - Only check, if all would be good to update the interoperable device object. Returns the API query with dbedit command
