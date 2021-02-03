@@ -5,6 +5,7 @@ Use Case is (why am I not just using a dns name?) that I have an ASA holding a S
 
 
 When triggering the script with NAGIOS based system - Output:
+
  ![Example - Nagios Output](/nagios_updateinteroperabledevice.png)
 
 Arguments:
