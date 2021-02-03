@@ -11,7 +11,6 @@ from cpapi import APIClient, APIClientArgs
 import os
 import dns.resolver
 import argparse
-import argparse
 import logging
 
 
