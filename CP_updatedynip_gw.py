@@ -16,15 +16,14 @@ import logging
 
 
 parser = argparse.ArgumentParser(description="Resolve Hostname to IP (and change IP of interoperable device).")
-parser.add_argument("--import", type=bool, help="Import resolved IP to Check Point Environment and install Policy (Currently Check Point R80.30++)")
 parser.add_argument("--authapi", help="Authentication to CP API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'", required=True)
+parser.add_argument("--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices). otherwise define space separated", required=True)
 parser.add_argument("--apiserver", help="Where to auth and script to", required=True)
-parser.add_argument("--scripttarget", help="target server (mostly Firewall Management?)")
 parser.add_argument("--hostobjectname", help="host object name", required=True)
 parser.add_argument("--hostname", type=str, help="Tell hostname to resolve", required=True)
+parser.add_argument("--scripttarget", help="target server (mostly Firewall Management?)")
 parser.add_argument("--test", help="Nur gucken, nicht anfassen // read only, no action taken",action="store_true")
 parser.add_argument("--nagios", help="Give feedback, understandable for NAGIOS systems",action="store_true")
-parser.add_argument("--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices). otherwise define space separated", required=True)
 parser.add_argument("--package", help="Policy Package to install - if only one package is present, we will use that!")
 parser.add_argument("--verbose", action="store_true")
 
@@ -151,7 +150,7 @@ def fun_importCP():
                         output_text.update({"Message":"IP of "+args.hostname+"Changed but was unable to edit gateway object!"})
                         output_code.append("WARNING")
                 else:
-                    logging.debug("would send query to API:\n'run-script',{'script-name':'change interoperable devices ip','script': "+str_set_newip+",'targets' : "+args.apiserver+"}")
+                    print("would send query to API:\n'run-script',{'script-name':'change interoperable devices ip','script': "+str_set_newip+",'targets' : "+args.apiserver+"}")
             else:
                 output_text.update({"Message":"IP did not change - nothing to do!"})
                 output_code.append("OK")
