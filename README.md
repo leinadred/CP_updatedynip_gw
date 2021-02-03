@@ -25,7 +25,7 @@ parser.add_argument("--test", help="Nur gucken, nicht anfassen // read only, no 
 
 parser.add_argument("--nagios", help="Give feedback, understandable for NAGIOS systems",action="store_true")
  - when IP is not changed, give back "OK" state. Else return warning (in default setup does not issue notification. 
- 
+ [![N|Solid](https://raw.githubusercontent.com/leinadred/CP_updatedynip_gw/main/nagios_updateinteroperabledevice.png?token=AJ2LEFLVD3A2LZDYPSB3LUTADMIEA)]
 parser.add_argument("--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices)", required=True)
  - Firewalls to get the updated policy
 
