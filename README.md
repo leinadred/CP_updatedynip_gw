@@ -28,7 +28,7 @@ Arguments:
 
 "--nagios", help="Give feedback, understandable for NAGIOS systems"
  - when IP is not changed, give back "OK" state. Else return warning (in default setup does not issue notification. 
- ![Example - Nagios Output](nagios_updateinteroperabledevice.png)]
+ ![Example - Nagios Output](/nagios_updateinteroperabledevice.png)]
  
 "--package", help="Policy Package to install - if only one package is present, we will use that!"
  - name of policy package. if not set and only one package is found, we´ll use that
