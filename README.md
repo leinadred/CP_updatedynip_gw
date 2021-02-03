@@ -25,7 +25,7 @@ Arguments:
 "--hostname", type=str, help="Tell hostname to resolve", required=True
  - Hostname to resolve
 
-"--scripttarget", help="target server (mostly CP Management Server?)
+"--scripttarget", help="target server (mostly CP Management Server?)"
  - if not set, the script queries for Check Point host objects. If more than one is found, script aborts.
 
 "--test", help="Nur gucken, nicht anfassen // read only, no action taken"
