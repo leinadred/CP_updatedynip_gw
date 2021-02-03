@@ -10,7 +10,7 @@ When triggering the script with NAGIOS based system - Output:
  
  You need python interpreter (3.8 works good, 3.9 too. older should work too)
  Modules used (added manually)
-  - cpapi (Check Point API SDK) (https://github.com/CheckPointSW/) - Thanks!
+  - cpapi (Check Point API SDK) (https://github.com/CheckPointSW/)
   - dns.resolver (as the name says, to resolve DNS :-) )
   
 
