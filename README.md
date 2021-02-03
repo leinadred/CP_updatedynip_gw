@@ -14,7 +14,7 @@ Arguments:
  - provide how to authenticate with API server and auth informations
 
 "--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices)", required=True
- - Firewalls to get the updated policy, when not set the script queries for gateways. (if only one found, this is been used)
+ - Firewalls to get the updated policy, when not set the script queries for gateways. (if only one, this is been used)
 
 "--apiserver", help="Firewall Management Server", required=True
 - Mostly IP of Firewall Management Server
