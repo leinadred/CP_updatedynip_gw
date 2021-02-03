@@ -4,6 +4,7 @@ Script queries for a given DNS Name (i.e. DynDNS) and uses the IP to update an i
 Use Case is (why am I not just using a dns name?) that I have an ASA holding a Site to Site VPN with Check Point. ASA side also has a dynamically assigned public IP. With a bit of work, script can be used to do that with multiple sites/objects or to create interoperable devices batchwise.
 
 Arguments:
+```sh
 parser.add_argument("--authapi", help="Authentication to CP API (for key auth use 'key:<apikey>' for user/pass 'up:<user>:<pass>'", required=True)
  
  - provide how to authenticate with API server and auth informations
@@ -25,7 +26,7 @@ parser.add_argument("--test", help="Nur gucken, nicht anfassen // read only, no 
 
 parser.add_argument("--nagios", help="Give feedback, understandable for NAGIOS systems",action="store_true")
  - when IP is not changed, give back "OK" state. Else return warning (in default setup does not issue notification. 
- (https://raw.githubusercontent.com/leinadred/CP_updatedynip_gw/main/nagios_updateinteroperabledevice.png)
+ [!(https://raw.githubusercontent.com/leinadred/CP_updatedynip_gw/main/nagios_updateinteroperabledevice.png)]
  
 parser.add_argument("--targetgw", help="Destination Gateway to install policy to (can use 'all' to install on all devices)", required=True)
  - Firewalls to get the updated policy
@@ -35,6 +36,7 @@ parser.add_argument("--package", help="Policy Package to install - if only one p
 
 parser.add_argument("--verbose", action="store_true")
  - Add verbose logging
- 
+```
+
  Feedback or improvements are highly appreciated. Still learning :)
  
