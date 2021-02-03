@@ -7,6 +7,12 @@ Use Case is (why am I not just using a dns name?) that I have an ASA holding a S
 When triggering the script with NAGIOS based system - Output:
 
  ![Example - Nagios Output](/nagios_updateinteroperabledevice.png)
+ 
+ You need python interpreter (3.8 works good, 3.9 too. older should work too)
+ Modules used (added manually)
+  - cpapi (Check Point API SDK) (https://github.com/CheckPointSW/) - Thanks!
+  - dns.resolver (as the name says, to resolve DNS :-) )
+  
 
 Arguments:
 ```sh
