@@ -1,3 +1,5 @@
+![license](https://img.shields.io/github/license/leinadred/CP_updatedynip_gw)
+![language](https://img.shields.io/github/languages/top/leinadred/CP_updatedynip_gw)
 # CP_updatedynip_gw
 
 Script queries for a given DNS Name (i.e. DynDNS) and uses the IP to update an interoperable device object via Check Points Management API by executing "dbedit" command, as interoperable devices are not available via Management API (Or I did not find that :) ) 
